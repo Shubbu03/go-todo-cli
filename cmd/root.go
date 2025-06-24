@@ -15,8 +15,58 @@ var rootCmd = &cobra.Command{
 	Long: `Welcome to the go-todo cli app. It is a basic todo app,
 	You can create, view , delete and update the status of your todos with simple flags
 	For the flag details type go-todo -help`,
+}
 
-	// Run: func(cmd *cobra.Command, args []string) { },
+var dueDateStr string
+
+var createTodoCmd = &cobra.Command{
+	Use:     "add",
+	Aliases: []string{"create"},
+	Short:   "Create new todo",
+	Long:    "Create new todos and add due date. Default pending data for todos is 24h",
+	Args:    cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		CreateTodo(args[0], dueDateStr)
+	},
+}
+
+var viewTodosCmd = &cobra.Command{
+	Use:   "view",
+	Short: "View all todos",
+	Long:  "Display all todos in a table, sorted by due date (ascending)",
+	Run: func(cmd *cobra.Command, args []string) {
+		ViewTodos()
+	},
+}
+
+var viewTodoByIDCmd = &cobra.Command{
+	Use:   "get",
+	Short: "View todo by id",
+	Long:  "Display todo by the id provided",
+	Run: func(cmd *cobra.Command, args []string) {
+		ViewTodoByID(args[0])
+	},
+}
+
+var deleteTodoCmd = &cobra.Command{
+	Use:     "delete",
+	Aliases: []string{"remove"},
+	Short:   "Delete any todo",
+	Long:    "Delete any todo.Pass the id of todo to be deleted",
+	Args:    cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		DeleteTodo(args[0])
+	},
+}
+
+var updateTodoStatusCmd = &cobra.Command{
+	Use:   "update",
+	Short: "Update the status of a todo",
+	Long:  "Update the status of a todo by providing its ID and the new status (pending, in-progress, completed)",
+	Args:  cobra.ExactArgs(2),
+	Run: func(cmd *cobra.Command, args []string) {
+		UpdateTodoStatus(args[0], args[1])
+	},
 }
 
 func Execute() {
@@ -27,13 +77,11 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.go-todo-cli.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	createTodoCmd.Flags().StringVarP(&dueDateStr, "due", "d", "", "Due date for the todo (YYYY-MM-DD). Default is 24h from now.")
+	rootCmd.AddCommand(createTodoCmd)
+	rootCmd.AddCommand(viewTodosCmd)
+	rootCmd.AddCommand(viewTodoByIDCmd)
+	rootCmd.AddCommand(deleteTodoCmd)
+	rootCmd.AddCommand(updateTodoStatusCmd)
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
