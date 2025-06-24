@@ -19,27 +19,31 @@ A simple and efficient CLI-based Todo application written in Go. Manage your tas
    ```sh
    go build -o go-todo
    ```
+3. Move the binary to your PATH:
+   ```sh
+   sudo mv go-todo /usr/local/bin/
+   ```
 
 ## Usage
 - Add a todo:
   ```sh
-  ./go-todo add "Task title" --due 2025-06-25
+  go-todo add "Task title" --due 2025-06-25
   ```
 - View all todos:
   ```sh
-  ./go-todo view
+  go-todo view
   ```
 - View a todo by ID:
   ```sh
-  ./go-todo get 1
+  go-todo get 1
   ```
 - Update status:
   ```sh
-  ./go-todo update 1 completed
+  go-todo update 1 completed
   ```
 - Delete a todo:
   ```sh
-  ./go-todo delete 1
+  go-todo delete 1
   ```
 
 ## Status Options
@@ -50,5 +54,3 @@ A simple and efficient CLI-based Todo application written in Go. Manage your tas
 ## Data Storage
 Todos are stored in a local `todos.json` file.
 
-## License
-MIT
